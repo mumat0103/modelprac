@@ -1,0 +1,11 @@
+{% block content %}
+<h1>Blog Search</h1>
+<a href="{% url 'home' %}">홈으로</a>
+<br><br>
+{% if search_blog %}
+    {% for post in search_blog %}
+        <h2> <a href="{% url 'detail' post.id %}">{{post.title}}</a></h2>
+        <p>{{post.content}}</p>
+    {% endfor %}
+{% endif %}         
+{% endblock %}

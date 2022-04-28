@@ -1,3 +1,4 @@
+from statistics import mode
 from django.db import models
 
 class Blog(models.Model):
@@ -12,3 +13,6 @@ class Blog(models.Model):
 
     def summary(self):
         return self.content[:100]
+    
+
+    

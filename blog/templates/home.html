@@ -1,5 +1,11 @@
 <h1> Like Lion 10th Blog Project</h1>
 <br/>
+<div id="full-page-search">
+    <form action="{% url 'search' %}" class="search-header">
+        <input type="search" value="" placeholder="type keyword(s) here." name='keyword' />
+        <button type="submit" class ="btn btn-sm button-theme">Search</button>
+    </form>
+</div>
 <a href="{% url 'new'%}">새 글 작성하기</a>
 {% for blog in blogs %}
 <div>
