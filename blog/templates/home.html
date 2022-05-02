@@ -1,5 +1,17 @@
-<h1> Like Lion 10th Blog Project</h1>
-<br/>
+{% extends 'base.html' %} {% load static %} {% block content%}
+<link rel="stylesheet" type="text/css" href="{% static 'style.css' %}" />
+
+    
+<div class="title"> 
+    <h1> Like Lion 10th Blog Project</h1>
+    <br/>   
+    <img
+        src="{% static 'coni.png' %}"
+        width="100"
+        height="100"
+        class="logo"
+    />
+</div>
 <div id="full-page-search">
     <form action="{% url 'search' %}" class="search-header">
         <input type="search" value="" placeholder="type keyword(s) here." name='keyword' />
@@ -17,3 +29,5 @@
     </div>
 <br/>
 {% endfor %}
+
+{%endblock%}

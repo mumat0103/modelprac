@@ -3,6 +3,8 @@ from django.db import reset_queries
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Blog
+from django.conf import settings
+import os
 
 def home(request):
     blogs = Blog.objects.all()
@@ -19,6 +21,7 @@ def create(request):
     new_blog = Blog()
     new_blog.title = request.POST['title']
     new_blog.content = request.POST['content']
+    new_blog.image = request.FILES['image']
     new_blog.save()
     return redirect('detail', new_blog.id)
 
@@ -30,6 +33,7 @@ def update(request, id):
     update_blog = get_object_or_404(Blog, pk = id)
     update_blog.title = request.POST['title']
     update_blog.content = request.POST['content']
+    update_blog.image = request.FILES['image']
     update_blog.save()
     return redirect('detail', update_blog.id)
 
@@ -37,6 +41,7 @@ def delete(request, id):
     delete_blog = get_object_or_404(Blog, pk = id)
     delete_blog.delete()
     return redirect('home')
+
 
 
 #검색 기능 추가
