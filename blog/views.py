@@ -53,7 +53,7 @@ def edit(request, id):
         form = Blogform(instance= edit_blog)
         return render(request, 'edit.html', {'form':form})
 
-
+"""
 def update(request, id):
     update_blog = get_object_or_404(Blog, pk = id)
     update_blog.title = request.POST['title']
@@ -61,7 +61,7 @@ def update(request, id):
     update_blog.image = request.FILES['image']
     update_blog.save()
     return redirect('detail', update_blog.id)
-
+"""
 def delete(request, id):
     delete_blog = get_object_or_404(Blog, pk = id)
     delete_blog.delete()
