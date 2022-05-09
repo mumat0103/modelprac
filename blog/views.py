@@ -1,13 +1,19 @@
 from ast import keyword
+import imp
 from django.db import reset_queries
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Blog
 from django.conf import settings
+from .form import Blogform
 import os
+from django.core.paginator import Paginator
 
 def home(request):
     blogs = Blog.objects.all()
+    paginator = Paginator(blogs, 3)
+    pagnum = request.GET.get('page')
+    blogs = paginator.get_page(pagnum)
     return render(request, 'home.html', {'blogs':blogs})
 
 def detail(request, id):
@@ -15,7 +21,14 @@ def detail(request, id):
     return render(request, 'detail.html', {'blog':blog})
 
 def new(request):
-    return render(request, 'new.html')
+    if request.method == 'POST':
+        form = Blogform(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+    else:
+        form = Blogform()
+        return render(request, 'new.html', {'form':form})
 
 def create(request):
     new_blog = Blog()
@@ -27,7 +40,19 @@ def create(request):
 
 def edit(request, id):
     edit_blog = get_object_or_404(Blog, pk = id)
-    return render(request, 'edit.html', {'blog':edit_blog})
+    
+    if request.method == 'POST':
+        form = Blogform(request.POST, request.FILES)
+        if form.is_valid():
+            edit_blog.title = form.cleaned_data['title']
+            edit_blog.content = form.cleaned_data['content']
+            edit_blog.image = form.cleaned_data['image']
+            edit_blog.save()
+            return redirect('detail', edit_blog.id)
+    else:
+        form = Blogform(instance= edit_blog)
+        return render(request, 'edit.html', {'form':form})
+
 
 def update(request, id):
     update_blog = get_object_or_404(Blog, pk = id)
@@ -41,8 +66,6 @@ def delete(request, id):
     delete_blog = get_object_or_404(Blog, pk = id)
     delete_blog.delete()
     return redirect('home')
-
-
 
 #검색 기능 추가
 def search(request):
